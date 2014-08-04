@@ -181,7 +181,11 @@ int main(int argc, char *argv[])
 {
     gree_t state;
     gree_init(&state);
+
     gree_dump(&state);
+
+    uint32_t *bits = gree_bits(&state);
+    printf("RCV:  .  - 0 [0: S%s0102%s0\n", bstr(bits[0]), bstr(bits[1]));
 
     int c, d, p;
     while ((c = getchar()) != 'q') {
@@ -240,8 +244,27 @@ int main(int argc, char *argv[])
         if (d) {
             gree_dump(&state);
 
-            uint32_t *bits = gree_bits(&state);
+            bits = gree_bits(&state);
             printf("RCV:  .  - 0 [0: S%s0102%s0\n", bstr(bits[0]), bstr(bits[1]));
+
+            printf("%d %d ", timings[GREE_TIMING_S].mark, timings[GREE_TIMING_S].space);
+
+            for (int i = 31; i >= 0; i--) {
+                gree_timing_t t = timings[(bits[0] & (1 << i)) >> i];
+                printf("%d %d ", t.mark, t.space);
+            }
+
+            printf("%d %d ", timings[GREE_TIMING_0].mark, timings[GREE_TIMING_0].space);
+            printf("%d %d ", timings[GREE_TIMING_1].mark, timings[GREE_TIMING_1].space);
+            printf("%d %d ", timings[GREE_TIMING_0].mark, timings[GREE_TIMING_0].space);
+            printf("%d %d ", timings[GREE_TIMING_2].mark, timings[GREE_TIMING_2].space);
+
+            for (int i = 31; i >= 0; i--) {
+                gree_timing_t t = timings[(bits[1] & (1 << i)) >> i];
+                printf("%d %d ", t.mark, t.space);
+            }
+
+            printf("%d %d\n", timings[GREE_TIMING_0].mark, timings[GREE_TIMING_0].space);
         }
     }
 
