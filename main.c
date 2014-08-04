@@ -43,6 +43,13 @@ enum {
     GREE_DISPMODE_OUTDOOR,
 };
 
+enum {
+    GREE_TIMING_0,
+    GREE_TIMING_1,
+    GREE_TIMING_2,
+    GREE_TIMING_S,
+};
+
 static const char *names[][12] = {
     { "GREE_OFF", "GREE_ON", },
     { "GREE_MODE_AUTO", "GREE_MODE_COOL", "GREE_MODE_DRY", "GREE_MODE_FAN", "GREE_MODE_HEAT", },
@@ -66,6 +73,18 @@ typedef struct {
     uint8_t xfan;
     uint8_t disp_mode;
 } gree_t;
+
+typedef struct {
+    uint16_t mark;
+    uint16_t space;
+} gree_timing_t;
+
+gree_timing_t timings[] = {
+    {  632,   527 },
+    {  632,  1606 },
+    {  632, 19816 },
+    { 8948,  4422 },
+};
 
 char *bstr(uint32_t v)
 {
